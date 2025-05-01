@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-gray-900 text-gray-50;
+  }
+}
+
+:root {
+  --sidebar-width: 20rem;
+  /* o el valor que necesites */
+}
+
+@theme {
+  --color-red-50: #fff1f4;
+  --color-red-100: #ffe4ea;
+  --color-red-200: #fecdd8;
+  --color-red-300: #fda4b8;
+  --color-red-400: #fb718f;
+  --color-red-500: #f43f67;
+  --color-red-600: #e11d48;
+  --color-red-700: #be1238;
+  --color-red-800: #9f1231;
+  --color-red-900: #88132d;
+  --color-red-950: #4c0515;
+
+
+}
