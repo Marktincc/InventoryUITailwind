@@ -41,7 +41,7 @@ export const ProductsTable = ({ products, loading, error, onDelete }) => {
   };
   console.log(products);
   return (
-    <div className="mt-8">
+    <div className="">
       <DataTable
         data={products}
         columns={columns}

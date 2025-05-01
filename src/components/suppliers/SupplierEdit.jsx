@@ -3,7 +3,6 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { useNavigate, useParams } from 'react-router-dom';
 import { TwoRowForm } from '../common/TwoRowForm';
-import { ConfirmModal } from '../common/ConfirmModal';
 
 export const SupplierEdit = ({ onSupplierUpdated }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -120,14 +119,11 @@ export const SupplierEdit = ({ onSupplierUpdated }) => {
         required: true,
       },
     ];
-    const handleDeleteClick = () => {
-      setItemToDelete(id);
-      setShowDeleteModal(true);
-    }
-    const handleDeleteUser = async () => {
+
+    const handleDeleteSupplier = async () => {
       const daletePromise = async () => {
         try {
-          const response = await axios.delete(`http://localhost:8080/proveedores/delete/${itemToDelete}`);
+          const response = await axios.delete(`http://localhost:8080/proveedores/delete/${id}`);
           return 'Proveedor eliminado correctamente';
         } catch (error) {
           console.error('Error deleting supplier:', error);
@@ -150,27 +146,14 @@ export const SupplierEdit = ({ onSupplierUpdated }) => {
     };
     return (
       <>
-        <header className='items-start justify-between space-y-2 sm:flex sm:space-x-4 sm:space-y-0 sm:py-4 sm:rtl:space-x-reverse mb-16'>
-          <div>
-            <h1 className='text-2xl font-bold tracking-tight'>Editar Proveedor</h1>
-          </div>
-          <div className='flex flex-wrap items-center gap-4 justify-start shrink-0'>
-            <button
-              type='button'
-              className='px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
-              onClick={handleDeleteClick}
-            >
-              Eliminar
-            </button>
-
-          </div>
-        </header>
         <div className="">
           <TwoRowForm inputs={inputs} onSubmit={(e) => {
             e.preventDefault();
             handleSaveSupplier();
 
           }}
+            title="Editar Proveedor"
+            onDelete={handleDeleteSupplier}
             buttons={[
               {
                 type: 'submit',
@@ -179,7 +162,7 @@ export const SupplierEdit = ({ onSupplierUpdated }) => {
               },
               {
                 type: 'button',
-                className: 'px-4 py-2 border-2 border-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2',
+                className: 'px-4 py-2 border-2 border-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2',
                 text: 'Cancelar',
                 onClick: handleCancel
               }
@@ -187,15 +170,7 @@ export const SupplierEdit = ({ onSupplierUpdated }) => {
           />
 
         </div>
-        <ConfirmModal
-          isOpen={showDeleteModal}
-          onClose={() => setShowDeleteModal(false)}
-          onConfirm={() => {
-            handleDeleteUser();
-          }}
-          title="Eliminar proveedor"
-          message="¿Estás seguro de que deseas eliminar este proveedor y los productos asociados?"
-        />
+
       </>
     );
 };

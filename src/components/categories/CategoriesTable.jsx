@@ -33,7 +33,7 @@ export const CategoriesTable = ({ categories, loading, error,onDelete }) => {
     onDelete(id);
   };
   return (
-    <div className="mt-8">
+    <div className="">
       <DataTable
         data={categories}
         columns={columns}

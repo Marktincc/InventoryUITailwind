@@ -67,7 +67,7 @@ export const DataTable = ({
           </NavLink>
         </div>
       </header>
-      <div className="bg-gray-800 rounded-xl border border-gray-900 bg-gray shadow-sm">
+      <div className="bg-gray-800 rounded-xl border border-gray-900 bg-gray shadow-sm mt-6">
         <div className='relative overflow-x-auto border-t'>
           <table className="w-full table-auto divide-y text-start">
             <thead>

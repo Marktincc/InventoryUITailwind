@@ -6,8 +6,6 @@ import { TwoRowForm } from '../common/TwoRowForm';
 import { ConfirmModal } from '../common/ConfirmModal';
 
 export const ProductsEdit = ({ onProductsUpdated }) => {
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
   const [product, setProduct] = useState({
@@ -151,14 +149,11 @@ export const ProductsEdit = ({ onProductsUpdated }) => {
       valuedisable: 'Seleccione una categoría',
     },
   ];
-  const handleDeleteClick = () => {
-    setItemToDelete(id);
-    setShowDeleteModal(true);
-  }
+
   const handleDeleteProduct = async () => {
     const deletePromise = async () => {
       try {
-        const response = await axios.delete(`http://localhost:8080/productos/delete/${itemToDelete}`);
+        const response = await axios.delete(`http://localhost:8080/productos/delete/${id}`);
         
         return 'Producto eliminado correctamente';   
       }catch (error) {
@@ -183,27 +178,14 @@ export const ProductsEdit = ({ onProductsUpdated }) => {
   }
   return (
     <>
-      <header className='items-start justify-between space-y-2 sm:flex sm:space-x-4 sm:space-y-0 sm:py-4 sm:rtl:space-x-reverse mb-16'>
-        <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Editar Producto</h1>
-        </div>
-        <div className='flex flex-wrap items-center gap-4 justify-start shrink-0'>
-            <button
-              type='button'
-              className='px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
-              onClick={handleDeleteClick}
-            >
-              Eliminar
-            </button>
-
-          </div>
-      </header>
       <div className="">
         <TwoRowForm inputs={inputs} onSubmit={(e) => {
           e.preventDefault();
           handleSaveProduct();
 
         }}
+        onDelete={handleDeleteProduct}
+        title={'Editar Producto'}
           buttons={[
             {
               type: 'submit',
@@ -212,23 +194,13 @@ export const ProductsEdit = ({ onProductsUpdated }) => {
             },
             {
               type: 'button',
-              className: 'px-4 py-2 border-2 border-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2',
+              className: 'px-4 py-2 border-2 border-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2',
               text: 'Cancelar',
               onClick: handleCancel
             }
           ]}
         />
-
       </div>
-      <ConfirmModal
-          isOpen={showDeleteModal}
-          onClose={() => setShowDeleteModal(false)}
-          onConfirm={() => {
-            handleDeleteProduct();
-          }}
-          title="Eliminar producto"
-          message="¿Estás seguro de que deseas eliminar este producto?"
-        />
     </>
   );
 }

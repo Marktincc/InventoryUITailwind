@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { useNavigate, useParams } from 'react-router-dom';
 import { TwoRowForm } from '../common/TwoRowForm';
-import { ConfirmModal } from '../common/ConfirmModal';
+
 
 
 export const CategoriesEdit = ({ onCategoryUpdated }) => {
@@ -66,14 +66,11 @@ export const CategoriesEdit = ({ onCategoryUpdated }) => {
   const handleCancel = () => {
     navigate('/admin/categories');
   };
-  const handleDeleteClick = () => {
-    setItemToDelete(id);
-    setShowDeleteModal(true);
-  }
+ 
   const handleDeleteCategorie = async () => {
     const deletePromise = async () => {
       try {
-        const response = await axios.delete(`http://localhost:8080/categorias/delete/${itemToDelete}`);
+        const response = await axios.delete(`http://localhost:8080/categorias/delete/${id}`);
         return 'Categoría eliminada correctamente';
       } catch (error) {
         console.error('Error deleting category:', error);
@@ -108,26 +105,13 @@ export const CategoriesEdit = ({ onCategoryUpdated }) => {
 
   return (
     <>
-      <header className='items-start justify-between space-y-2 sm:flex sm:space-x-4 sm:space-y-0 sm:py-4 sm:rtl:space-x-reverse mb-16'>
-        <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Editar Categoría</h1>
-        </div>
-        <div className='flex flex-wrap items-center gap-4 justify-start shrink-0'>
-            <button
-              type='button'
-              className='px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
-              onClick={handleDeleteClick}
-            >
-              Eliminar
-            </button>
-
-          </div>
-      </header>
       <div className="">
         <TwoRowForm inputs={inputs} onSubmit={(e) => {
           e.preventDefault();
           handleSaveCategory();
         }}
+          title="Editar Categoría"
+          onDelete={handleDeleteCategorie}
           buttons={[
             {
               type: 'submit',
@@ -136,22 +120,13 @@ export const CategoriesEdit = ({ onCategoryUpdated }) => {
             },
             {
               type: 'button',
-              className: 'px-4 py-2 border-2 border-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2',
+              className: 'px-4 py-2 border-2 border-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2',
               text: 'Cancelar',
               onClick: handleCancel,
             },
           ]}
         />
       </div>
-      <ConfirmModal
-          isOpen={showDeleteModal}
-          onClose={() => setShowDeleteModal(false)}
-          onConfirm={() => {
-            handleDeleteCategorie();
-          }}
-          title="Eliminar categoria"
-          message="¿Estás seguro de que deseas eliminar esta categoria y los productos asociados?"
-        />
     </>
   );
 };

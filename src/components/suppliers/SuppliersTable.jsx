@@ -38,13 +38,13 @@ const navigate = useNavigate();
   };
 
   return (
-    <div className='mt-8'>
+    <div className=''>
       <DataTable
         columns={columns}
         data={suppliers}
         onEdit={(item) => navigate(`${item.id}/edit`)}
         onDelete={(item) => handleDeleteSupplier(item.id)}
-        tittle='Proveedores'
+        title='Proveedores'
         buttonText='Crear Proveedor'
 
       />

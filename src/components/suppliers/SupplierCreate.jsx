@@ -53,7 +53,7 @@ export const SupplierCreate = ({ onSupplierCreated }) => {
             correo: '',
           });
         } else {
-          navigate('/admin/proveedores');
+          navigate('/admin/suppliers');
         } return data;
       },
       error: (error) => {
@@ -113,11 +113,6 @@ export const SupplierCreate = ({ onSupplierCreated }) => {
   ]
   return (
     <>
-      <header className='items-start justify-between space-y-2 sm:flex sm:space-x-4 sm:space-y-0 sm:py-4 sm:rtl:space-x-reverse mb-16'>
-        <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Crear Proveedor</h1>
-        </div>
-      </header>
       <div className="">
         <TwoRowForm
           inputs={inputs}
@@ -126,6 +121,7 @@ export const SupplierCreate = ({ onSupplierCreated }) => {
             handleSaveSupplier(createAnother);
             setCreateAnother(false);
           }}
+          title="Crear proveedor"
           buttons={[
             {
               type: 'submit',

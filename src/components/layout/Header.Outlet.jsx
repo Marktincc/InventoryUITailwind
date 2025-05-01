@@ -7,15 +7,25 @@ export const HeaderOutlet = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate('/'); // O '/login' si es lo adecuado
   };
 
   const location = useLocation();
+  
+  // Filtra las partes de la URL, pero omite 'admin' y las partes numéricas
   const pathnames = location.pathname
     .split('/')
     .filter((x) => x && x !== 'admin' && isNaN(Number(x)));
+  
+  const isAdminRoute = location.pathname.startsWith('/admin');
+  
+  // Si estamos en '/admin' exactamente, la miga de pan no debería mostrar más nada
+  if (location.pathname === '/admin') {
+    pathnames.push('Admin'); // Esto añadirá solo "Admin" cuando estamos en "/admin"
+  }
 
-  const prependAdmin = (route) => '/admin' + route;
+  const prependAdmin = (route) => (isAdminRoute ? '/admin' + route : route);
+  
   const getInitials = (name) => {
     if (!name) return 'U'; // Si no hay nombre, devolver "U" de Usuario
     const words = name.trim().split(' ');
@@ -24,16 +34,17 @@ export const HeaderOutlet = () => {
     }
     return (words[0][0] + words[1][0]).toUpperCase(); // Primera letra de la primera y segunda palabra
   };
+
   return (
     <header className="sticky top-0 z-10 bg-gray-800 flex h-16 w-full shrink-0 items-center border-b border-gray-800 ">
       <div className="flex w-full items-center px-2 sm:px-4 md:px-6 lg:px-8">
         <div className="flex flex-1 items-center justify-between">
           <div className="flex-1">
             <ul className="hidden items-center gap-4 text-sm font-medium lg:flex">
-              {pathnames.map((name, index) => {
+              {/* Si estamos en '/admin', mostramos solo la palabra 'Admin' */}
+              {pathnames.length > 0 && pathnames.map((name, index) => {
                 const routeTo = prependAdmin('/' + pathnames.slice(0, index + 1).join('/'));
                 const isLast = index === pathnames.length - 1;
-                const label = decodeURIComponent(name);
                 return (
                   <li key={routeTo} className="flex items-center gap-2">
                     <span className="text-gray-400">/</span>
@@ -92,5 +103,5 @@ export const HeaderOutlet = () => {
         </div>
       </div>
     </header>
-  )
-}
+  );
+};

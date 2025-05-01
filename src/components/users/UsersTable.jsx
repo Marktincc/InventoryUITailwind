@@ -56,7 +56,7 @@ export const UsersTable = ({ users, loading, error, onDelete }) => {
 
   return (
 
-    <div className="mt-8">
+    <div className="">
       <DataTable
         data={users}
         columns={columns}

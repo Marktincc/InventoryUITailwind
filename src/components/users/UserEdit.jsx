@@ -3,11 +3,9 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { useNavigate, useParams } from 'react-router-dom';
 import { TwoRowForm } from '../common/TwoRowForm';
-import { ConfirmModal } from '../common/ConfirmModal';
+
 
 export const Useredit = ({ onUserUpdated }) => {
-  const [showDeleteModal, setShowDeleteModal] = useState(false); 
-  const [itemToDelete, setItemToDelete] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
   const [user, setUser] = useState({
@@ -48,7 +46,7 @@ export const Useredit = ({ onUserUpdated }) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
- 
+
   const handleSaveUser = async () => {
     const savePromise = async () => {
       try {
@@ -89,7 +87,7 @@ export const Useredit = ({ onUserUpdated }) => {
   const handleCancel = () => {
     navigate('/admin/users');
   };
-  
+
   const inputs = [
     {
       id: 'nombre',
@@ -163,22 +161,19 @@ export const Useredit = ({ onUserUpdated }) => {
   ];
 
 
-  const handleDeleteClick = () => {
-    setShowDeleteModal(true); 
-    setItemToDelete(id); 
-  };
+ 
   const handleDeleteUser = async () => {
     const deletePromise = async () => {
       try {
-        const response = await axios.delete(`http://localhost:8080/usuarios/delete/${itemToDelete}`);
-       
+        const response = await axios.delete(`http://localhost:8080/usuarios/delete/${id}`);
+
         return 'Usuario eliminado correctamente';
       } catch (error) {
         console.error('Error eliminando usuario:', error);
         throw error;
       }
     };
-  
+
     toast.promise(deletePromise(), {
       loading: 'Eliminando usuario...',
       success: (data) => {
@@ -198,27 +193,14 @@ export const Useredit = ({ onUserUpdated }) => {
 
   return (
     <>
-      <header className='items-start justify-between space-y-2 sm:flex sm:space-x-4 sm:space-y-0 sm:py-4 sm:rtl:space-x-reverse mb-16'>
-        <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Editar Usuario</h1>
-        </div>
-        <div className='flex flex-wrap items-center gap-4 justify-start shrink-0'>
-          <button
-            type='button'
-            className='px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
-            onClick={handleDeleteClick}
-          >
-            Eliminar
-          </button>
-
-        </div>
-      </header>
       <div className="">
         <TwoRowForm inputs={inputs} onSubmit={(e) => {
           e.preventDefault();
           handleSaveUser();
 
         }}
+          title='Editar Usuario'
+          onDelete={handleDeleteUser}
           buttons={[
             {
               type: 'submit',
@@ -227,7 +209,7 @@ export const Useredit = ({ onUserUpdated }) => {
             },
             {
               type: 'button',
-              className: 'px-4 py-2 border-2 border-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2',
+              className: 'px-4 py-2 border-2 border-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2',
               text: 'Cancelar',
               onClick: handleCancel
             }
@@ -235,15 +217,6 @@ export const Useredit = ({ onUserUpdated }) => {
         />
 
       </div>
-      <ConfirmModal
-          isOpen={showDeleteModal}
-          onClose={() => setShowDeleteModal(false)}
-          onConfirm={() => {
-            handleDeleteUser();
-          }}
-          title="Eliminar usuario"
-          message="¿Estás seguro de que deseas eliminar este usuario?"
-        />
     </>
   );
 };

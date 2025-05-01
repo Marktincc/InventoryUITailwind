@@ -63,7 +63,10 @@ export const Navbar = () => {
     if (path === '/admin') {
       return location.pathname === '/admin';
     }
-    
+    if (path === '/dashboard') {
+      // Aquí también chequeamos exactamente si la ruta es '/dashboard' y no cualquier cosa que empiece con '/dashboard'
+      return location.pathname === '/dashboard';
+    }
     // Para otras rutas, se activa si la ruta comienza con `path`
     return location.pathname.startsWith(path);
   };

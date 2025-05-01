@@ -74,17 +74,13 @@ export const CategoriesCreate = ({ onCategoryCreated }) => {
 
   return (
     <>
-      <header className='items-start justify-between space-y-2 sm:flex sm:space-x-4 sm:space-y-0 sm:py-4 sm:rtl:space-x-reverse mb-16'>
-        <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Crear Categoría</h1>
-        </div>
-      </header>
       <div className="">
         <TwoRowForm inputs={inputs} onSubmit={(e) => {
           e.preventDefault();
           handleSaveCategory(createAnother);
           setCreateAnother(false);
         }}
+        title={'Crear categoría'}
           buttons={[
             {
               type: 'submit',

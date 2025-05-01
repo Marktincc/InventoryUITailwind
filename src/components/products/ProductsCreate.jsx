@@ -148,8 +148,8 @@ export const ProductsCreate = ({ onProductsCreated }) => {
   ];
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Crear Producto</h1>
+    <div className="">
+      
       <TwoRowForm
         inputs={inputs}
         onSubmit={(e) => {
@@ -157,6 +157,7 @@ export const ProductsCreate = ({ onProductsCreated }) => {
           handleSaveProduct(createAnother);
           setCreateAnother(false);
         }}
+        title="Crear Producto"
         buttons={[
           {
             type: 'submit',
