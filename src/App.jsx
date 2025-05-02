@@ -22,6 +22,7 @@ import { SuppliersPage } from './pages/SuppliersPage';
 import { SupplierCreate } from './components/suppliers/SupplierCreate';
 import { SupplierEdit } from './components/suppliers/SupplierEdit';
 import { InventoryPage } from './pages/InventoryPage';
+import { AlertsDashboard } from './components/inventory/AlertsDashboard';
 
 function App() {
   return (
@@ -41,8 +42,11 @@ function App() {
             />
           }>
             <Route index element={<h1>Dashboard</h1>} />
-            <Route path="inventory" element={<InventoryPage/>} />
-            <Route path="reports" element={<h1>Reportes</h1>} />
+            <Route path="inventory" element={<InventoryPage/>}>
+              <Route index element={<h1>Inventario</h1>} />
+              <Route path="alerts" element={<AlertsDashboard />} />
+              <Route path="reports" element={<h1>Reportes</h1>} />
+            </Route>
           </Route>
 
           {/* Rutas solo para administradores */}
