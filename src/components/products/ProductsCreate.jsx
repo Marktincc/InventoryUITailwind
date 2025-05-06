@@ -100,6 +100,7 @@ export const ProductsCreate = ({ onProductsCreated }) => {
       id: 'nombreProducto',
       label: 'Nombre Producto',
       name: 'nombreProducto',
+      required: true,
       value: product.nombreProducto,
       onChange: handleChange,
     },
@@ -108,6 +109,7 @@ export const ProductsCreate = ({ onProductsCreated }) => {
       label: 'Cantidad',
       name: 'cantidad',
       value: product.cantidad,
+      pattern: '[0-9]*',
       onChange: handleChange,
 
     },
@@ -115,6 +117,7 @@ export const ProductsCreate = ({ onProductsCreated }) => {
       id: 'valor',
       label: 'Valor',
       name: 'valor',
+      pattern: '[0-9]*',
       value: product.valor,
       onChange: handleChange,
 
@@ -125,11 +128,17 @@ export const ProductsCreate = ({ onProductsCreated }) => {
       name: 'providerId',
       value: product.providerId,
       onChange: handleChange,
+      required: true,
       type: 'select',
-      options: proveedores.map((p) => ({
-        value: p.id,
-        label: p.nombre,
-      })),
+      options: [
+        { value : "",
+        label : "Seleccione un proveedor",
+        disabled : true},
+        ...proveedores.map((p) => ({
+          value: p.id,
+          label: p.nombre,
+        }))
+      ],
       valuedisable: 'Seleccione un proveedor',
     },
     {
@@ -138,12 +147,18 @@ export const ProductsCreate = ({ onProductsCreated }) => {
       name: 'categoriaId',
       value: product.categoriaId,
       onChange: handleChange,
+      required: true,
       type: 'select',
-      options: categorias.map((c) => ({
-        value: c.id,
-        label: c.name,
-      })),
-      valuedisable: 'Seleccione una categoría',
+      options: [
+       { value : "",
+        label : "Seleccione una categoría",
+        disabled : true},
+        ...categorias.map((c) => ({
+          value: c.id,
+          label: c.name,
+        }))
+      ] ,
+     valuedisable: 'Seleccione una categoría',
     },
   ];
 

@@ -61,6 +61,7 @@ export const TwoRowForm = ({ inputs, onSubmit, buttons, title, onDelete }) => {
                     required={input.required}
                     placeholder={input.placeholder}
                     disabled={input.disabled}
+                    pattern={input.pattern}
                   />
                 )}
               </div>

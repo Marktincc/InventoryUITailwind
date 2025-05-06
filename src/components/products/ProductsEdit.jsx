@@ -103,6 +103,7 @@ export const ProductsEdit = ({ onProductsUpdated }) => {
       id: 'nombreProducto',
       label: 'Nombre Producto',
       name: 'nombreProducto',
+      required: true,
       value: product.nombreProducto,
       onChange: handleChange,
     },
@@ -110,6 +111,7 @@ export const ProductsEdit = ({ onProductsUpdated }) => {
       id: 'cantidad',
       label: 'Cantidad',
       name: 'cantidad',
+      pattern: '[0-9]*',
       value: product.cantidad,
       onChange: handleChange,
 
@@ -118,6 +120,7 @@ export const ProductsEdit = ({ onProductsUpdated }) => {
       id: 'valor',
       label: 'Valor',
       name: 'valor',
+      pattern: '[0-9]*',
       value: product.valor,
       onChange: handleChange,
 
@@ -128,6 +131,7 @@ export const ProductsEdit = ({ onProductsUpdated }) => {
       name: 'providerId',
       value: product.providerId,
       onChange: handleChange,
+      required: true,
       type: 'select',
       options: proveedores.map((p) => ({
         value: p.id,
@@ -141,6 +145,7 @@ export const ProductsEdit = ({ onProductsUpdated }) => {
       name: 'categoriaId',
       value: product.categoriaId,
       onChange: handleChange,
+      required: true,
       type: 'select',
       options: categorias.map((c) => ({
         value: c.id,
