@@ -24,7 +24,7 @@ export const ProductsPage = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:8080/productos/getAll1');
+      const response = await axios.get('http://localhost:8080/productos/getAllPrueba');
       
       const formattedProducts = response.data.map(product => ({
         id: product.id,

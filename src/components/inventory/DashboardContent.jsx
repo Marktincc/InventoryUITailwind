@@ -28,7 +28,7 @@ export const DashboardContent = ({ inventoryStats, lowStockProducts }) => {
         <Card className="p-6 bg-gray rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4">Niveles de Inventario</h2>
           <div className="overflow-x-auto w-full">
-            <BarChart width={1000} height={300} data={lowStockProducts} className='w-full'>
+            <BarChart width={884} height={300} data={lowStockProducts} >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="nombreProducto" />
               <YAxis />
