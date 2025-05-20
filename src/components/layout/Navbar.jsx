@@ -9,28 +9,28 @@ export const Navbar = () => {
   const location = useLocation();
 
   const commonMenuItems = [
-    {
-      label: 'Dashboard',
-      path: '/dashboard',
-      icon: 'bi-speedometer2',
-    },
+    // {
+    //   label: 'Dashboard',
+    //   path: '/dashboard',
+    //   icon: 'bi-speedometer2',
+    // },
     {
       label: 'Inventario',
       path: '/dashboard/inventory',
       icon: 'bi-box-seam',
     },
-    {
-      label: 'Reportes',
-      path: '/dashboard/reports',
-      icon: 'bi-bar-chart',
-    },
+    // {
+    //   label: 'Reportes',
+    //   path: '/dashboard/reports',
+    //   icon: 'bi-bar-chart',
+    // },
   ]
   const adminMenuItems = [
-    {
-      label: 'Panel Admin',
-      path: '/admin',
-      icon: 'bi-gear',
-    },
+    // {
+    //   label: 'Panel Admin',
+    //   path: '/admin',
+    //   icon: 'bi-gear',
+    // },
     {
       label: 'Usuarios',
       path: '/admin/users',

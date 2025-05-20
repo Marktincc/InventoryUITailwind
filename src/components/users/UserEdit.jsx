@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { useNavigate, useParams } from 'react-router-dom';
 import { TwoRowForm } from '../common/TwoRowForm';
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const Useredit = ({ onUserUpdated }) => {
   const navigate = useNavigate();
@@ -17,11 +18,14 @@ export const Useredit = ({ onUserUpdated }) => {
     rol: 'user',
     estado: 'active'
   });
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordTouched, setPasswordTouched] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/usuarios/getById/${id}`);
+        const response = await axios.get(`${API_URL}/usuarios/getById/${id}`);
         const userData = response.data;
         setUser({
           nombre: userData.nombre,
@@ -43,14 +47,26 @@ export const Useredit = ({ onUserUpdated }) => {
   }, [id, navigate]);
 
   const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === 'password') {
+      setPassword(value);
+      setPasswordTouched(true);
+    } else if (name === 'confirmPassword') {
+      setConfirmPassword(value);
+    } else {
+      setUser({ ...user, [name]: value });
+    }
   };
 
-
   const handleSaveUser = async () => {
+    // Validar password solo si se intenta cambiar
+    if (passwordTouched && password !== confirmPassword) {
+      toast.error('Las contraseñas no coinciden');
+      return;
+    }
     const savePromise = async () => {
       try {
-        const response = await axios.patch(`http://localhost:8080/usuarios/update/${id}`, {
+        const payload = {
           nombre: user.nombre,
           apellidos: user.apellidos,
           direccion: user.direccion,
@@ -58,7 +74,11 @@ export const Useredit = ({ onUserUpdated }) => {
           telefono: user.telefono,
           rol: user.rol,
           estado: user.estado === 'active'
-        });
+        };
+        if (passwordTouched && password) {
+          payload.password = password;
+        }
+        const response = await axios.patch(`${API_URL}/usuarios/update/${id}`, payload);
         return 'Usuario actualizado correctamente';
       } catch (error) {
         console.error('Error updating user:', error);
@@ -157,15 +177,33 @@ export const Useredit = ({ onUserUpdated }) => {
         { value: 'active', label: 'Activo' },
         { value: 'inactive', label: 'Inactivo' }
       ]
+    },
+    {
+      id: 'password',
+      label: 'Contraseña',
+      name: 'password',
+      type: 'password',
+      value: password,
+      onChange: handleChange,
+      required: false
+    },
+    {
+      id: 'confirmPassword',
+      label: 'Confirmar contraseña',
+      name: 'confirmPassword',
+      type: 'password',
+      value: confirmPassword,
+      onChange: handleChange,
+      required: passwordTouched,
+      hidden: !passwordTouched
     }
-  ];
+  ].filter(input => !input.hidden);
 
 
- 
   const handleDeleteUser = async () => {
     const deletePromise = async () => {
       try {
-        const response = await axios.delete(`http://localhost:8080/usuarios/delete/${id}`);
+        const response = await axios.delete(`${API_URL}/usuarios/delete/${id}`);
 
         return 'Usuario eliminado correctamente';
       } catch (error) {

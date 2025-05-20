@@ -43,7 +43,7 @@ export const LoginForm = ({ formData, isLoading, handleChange, handleLogin }) =>
         </div>
 
         <Button
-          className="btn btn-shark w-100 py-2 mb-3"
+          className="btn btn-shark w-full py-2 mb-3"
           type="submit"
           disabled={isLoading}
         >

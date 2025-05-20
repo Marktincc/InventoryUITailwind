@@ -5,6 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { TwoRowForm } from '../common/TwoRowForm';
 import { ConfirmModal } from '../common/ConfirmModal';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const ProductsEdit = ({ onProductsUpdated }) => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -22,8 +24,8 @@ export const ProductsEdit = ({ onProductsUpdated }) => {
     const fetchData = async () => {
       try {
         const [provRes, catRes] = await Promise.all([
-          axios.get('http://localhost:8080/proveedores/getAll'),
-          axios.get('http://localhost:8080/categorias/getAll'),
+          axios.get(`${API_URL}/proveedores/getAll`),
+          axios.get(`${API_URL}/categorias/getAll`),
         ]);
         setProveedores(provRes.data);
         setCategorias(catRes.data);
@@ -38,7 +40,7 @@ export const ProductsEdit = ({ onProductsUpdated }) => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/productos/getById/${id}`);
+        const response = await axios.get(`${API_URL}/productos/getById/${id}`);
         const product = response.data;
         setProduct({
           nombreProducto: product.nombreProducto,
@@ -66,7 +68,7 @@ export const ProductsEdit = ({ onProductsUpdated }) => {
     const savePromise = async () => {
       try {
         console.log('Producto a enviar:', product);
-        const response = await axios.patch(`http://localhost:8080/productos/update/${id}`, {
+        const response = await axios.patch(`${API_URL}/productos/update/${id}`, {
           nombreProducto: product.nombreProducto,
           cantidad: product.cantidad,
           valor: product.valor,
@@ -158,12 +160,12 @@ export const ProductsEdit = ({ onProductsUpdated }) => {
   const handleDeleteProduct = async () => {
     const deletePromise = async () => {
       try {
-        const response = await axios.delete(`http://localhost:8080/productos/delete/${id}`);
-        
-        return 'Producto eliminado correctamente';   
-      }catch (error) {
+        const response = await axios.delete(`${API_URL}/productos/delete/${id}`);
+
+        return 'Producto eliminado correctamente';
+      } catch (error) {
         console.error('Error al eliminar el producto:', error);
-       throw error;
+        throw error;
       }
     };
     toast.promise(deletePromise(), {
@@ -175,11 +177,11 @@ export const ProductsEdit = ({ onProductsUpdated }) => {
         navigate('/admin/products');
         return data;
       },
-      error: (err)=>{
+      error: (err) => {
         return 'Error al eliminar el producto'
       },
     });
-    
+
   }
   return (
     <>
@@ -189,8 +191,8 @@ export const ProductsEdit = ({ onProductsUpdated }) => {
           handleSaveProduct();
 
         }}
-        onDelete={handleDeleteProduct}
-        title={'Editar Producto'}
+          onDelete={handleDeleteProduct}
+          title={'Editar Producto'}
           buttons={[
             {
               type: 'submit',

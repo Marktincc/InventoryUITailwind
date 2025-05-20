@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const SettingsPage = () => {
   const { user } = useAuthContext();
@@ -19,10 +19,13 @@ export const SettingsPage = () => {
     telefono: '',
     password: '',
   });
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordTouched, setPasswordTouched] = useState(false);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/usuarios/getById/${user.id}`);
+        const response = await axios.get(`${API_URL}/usuarios/getById/${user.id}`);
         const userData = response.data;
         setUsers({
           nombre: userData.nombre,
@@ -30,7 +33,7 @@ export const SettingsPage = () => {
           direccion: userData.direccion,
           correo: userData.correo,
           telefono: userData.telefono,
-          password: userData.password,
+          password: '', // No mostrar la contraseña encriptada
           rol: userData.rol,
           estado: userData.estado ? 'active' : 'inactive'
         });
@@ -45,21 +48,37 @@ export const SettingsPage = () => {
   }, [user.id, navigate]);
 
   const handleChange = (e) => {
-    setUsers({ ...user, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setUsers({ ...users, [name]: value });
+    if (name === 'password') setPasswordTouched(true);
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
   };
 
   const handleSaveUser = async () => {
+    // Solo validar confirmación si el usuario intenta cambiar la contraseña
+    if (passwordTouched && users.password !== confirmPassword) {
+      toast.error('Las contraseñas no coinciden');
+      return;
+    }
     const savePromise = async () => {
       try {
-        const response = await axios.patch(`http://localhost:8080/usuarios/update/${user.id}`, {
-          nombre: user.nombre,
-          apellidos: user.apellidos,
-          direccion: user.direccion,
-          correo: user.correo,
-          telefono: user.telefono,
-          rol: user.rol,
-          estado: user.estado === 'active'
-        });
+        // Solo incluir la contraseña si el usuario la modificó
+        const payload = {
+          nombre: users.nombre,
+          apellidos: users.apellidos,
+          direccion: users.direccion,
+          correo: users.correo,
+          telefono: users.telefono,
+          rol: users.rol,
+          estado: users.estado === 'active'
+        };
+        if (passwordTouched && users.password) {
+          payload.password = users.password;
+        }
+        const response = await axios.patch(`${API_URL}/usuarios/update/${user.id}`, payload);
         return 'Usuario actualizado correctamente';
       } catch (error) {
         console.error('Error updating user:', error);
@@ -71,7 +90,7 @@ export const SettingsPage = () => {
       loading: 'Actualizando usuario...',
       success: (data) => {
         // Notificar al componente padre para actualizar el listado
-      
+
         // redirigir al listado
         // navigate('/admin/users');
         return data;
@@ -123,7 +142,17 @@ export const SettingsPage = () => {
       type: 'password',
       value: users.password,
       onChange: handleChange,
-      required: true
+        required: passwordTouched // Solo requerido si se va a cambiar
+    },
+    {
+      id: 'confirmPassword',
+      label: 'Confirmar contraseña',
+      name: 'confirmPassword',
+      type: 'password',
+      value: confirmPassword,
+      onChange: handleConfirmPasswordChange,
+      required: passwordTouched,
+      hidden: !passwordTouched
     },
     {
       id: 'telefono',
@@ -151,10 +180,13 @@ export const SettingsPage = () => {
       value: users.estado,
       onChange: handleChange,
       required: true,
-      type: 'input',
-      disabled: true
+      type: 'select',
+      options: [
+        { value: 'active', label: 'Activo' },
+        { value: 'inactive', label: 'Inactivo' }
+      ]
     }
-  ];
+  ].filter(input => !input.hidden);
   return (
     <>
       <div className="">

@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 // Configuración del interceptor para incluir el token en las peticiones
 axios.interceptors.request.use(
   (config) => {
@@ -22,7 +24,7 @@ axios.interceptors.request.use(
 export const loginUser = (loginData) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      axios.post('http://localhost:8080/usuarios/login', loginData, {
+      axios.post(`${API_URL}/usuarios/login`, loginData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',

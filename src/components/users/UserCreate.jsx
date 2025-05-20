@@ -4,6 +4,8 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { TwoRowForm } from '../common/TwoRowForm';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const UserCreate = ({ onUserCreated }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState({
@@ -16,17 +18,28 @@ export const UserCreate = ({ onUserCreated }) => {
     rol: 'user',
     estado: 'active'
   });
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    if (e.target.name === 'confirmPassword') {
+      setConfirmPassword(e.target.value);
+    } else {
+      setUser({ ...user, [e.target.name]: e.target.value });
+    }
   };
   const [createAnother, setCreateAnother] = useState(false);
 
 
   const handleSaveUser = async (shouldCreateAnother = false) => {
+    // Validar que las contraseñas coincidan
+    if (user.password !== confirmPassword) {
+      toast.error('Las contraseñas no coinciden');
+      return;
+    }
+
     const savePromise = async () => {
       try {
-        const response = await axios.post('http://localhost:8080/usuarios/create', {
+        const response = await axios.post(`${API_URL}/usuarios/create`, {
           nombre: user.nombre,
           apellidos: user.apellidos,
           direccion: user.direccion,
@@ -63,6 +76,7 @@ export const UserCreate = ({ onUserCreated }) => {
             rol: 'user',
             estado: 'active'
           });
+          setConfirmPassword('');
         } else {
           // redirigir al listado
           navigate('/admin/users');
@@ -137,6 +151,15 @@ export const UserCreate = ({ onUserCreated }) => {
       required: true
     },
     {
+      id: 'confirmPassword',
+      label: 'Confirmar contraseña',
+      name: 'confirmPassword',
+      type: 'password',
+      value: confirmPassword,
+      onChange: handleChange,
+      required: true
+    },
+    {
       id: 'rol',
       label: 'Rol',
       name: 'rol',
@@ -168,7 +191,7 @@ export const UserCreate = ({ onUserCreated }) => {
 
   return (
     <>
-      
+
       <div className="">
         <TwoRowForm
           inputs={inputs}

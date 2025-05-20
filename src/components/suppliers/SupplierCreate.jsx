@@ -4,6 +4,8 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { TwoRowForm } from '../common/TwoRowForm';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const SupplierCreate = ({ onSupplierCreated }) => {
   const navigate = useNavigate();
   const [supplier, setSupplier] = useState({
@@ -24,7 +26,7 @@ export const SupplierCreate = ({ onSupplierCreated }) => {
   const handleSaveSupplier = async (shouldCreateAnother) => {
     const savePromise = async () => {
       try {
-        const response = await axios.post('http://localhost:8080/proveedores/create', {
+        const response = await axios.post(`${API_URL}/proveedores/create`, {
           nombre: supplier.nombre,
           nit: supplier.nit,
           direccion: supplier.direccion,

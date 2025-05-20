@@ -4,6 +4,8 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { TwoRowForm } from '../common/TwoRowForm';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const ProductsCreate = ({ onProductsCreated }) => {
   const navigate = useNavigate();
   const [product, setProduct] = useState({
@@ -21,8 +23,8 @@ export const ProductsCreate = ({ onProductsCreated }) => {
     const fetchData = async () => {
       try {
         const [provRes, catRes] = await Promise.all([
-          axios.get('http://localhost:8080/proveedores/getAll'),
-          axios.get('http://localhost:8080/categorias/getAll'),
+          axios.get(`${API_URL}/proveedores/getAll`),
+          axios.get(`${API_URL}/categorias/getAll`),
         ]);
         setProveedores(provRes.data);
         setCategorias(catRes.data);
@@ -45,7 +47,7 @@ export const ProductsCreate = ({ onProductsCreated }) => {
   const handleSaveProduct = async (shouldCreateAnother = false) => {
     const savePromise = async () => {
       try {
-        await axios.post('http://localhost:8080/productos/create', {
+        await axios.post(`${API_URL}/productos/create`, {
           nombreProducto: product.nombreProducto,
           cantidad: product.cantidad,
           valor: product.valor,
@@ -64,8 +66,8 @@ export const ProductsCreate = ({ onProductsCreated }) => {
       success: (data) => {
         if (onProductsCreated) {
           onProductsCreated();
-         
-        }if (shouldCreateAnother){
+
+        } if (shouldCreateAnother) {
           setProduct({
             nombreProducto: '',
             cantidad: 0,
@@ -74,7 +76,7 @@ export const ProductsCreate = ({ onProductsCreated }) => {
             categoriaId: '',
           });
         }
-         else {
+        else {
           navigate('/admin/products');
         }
         return data;
@@ -131,9 +133,11 @@ export const ProductsCreate = ({ onProductsCreated }) => {
       required: true,
       type: 'select',
       options: [
-        { value : "",
-        label : "Seleccione un proveedor",
-        disabled : true},
+        {
+          value: "",
+          label: "Seleccione un proveedor",
+          disabled: true
+        },
         ...proveedores.map((p) => ({
           value: p.id,
           label: p.nombre,
@@ -150,21 +154,23 @@ export const ProductsCreate = ({ onProductsCreated }) => {
       required: true,
       type: 'select',
       options: [
-       { value : "",
-        label : "Seleccione una categoría",
-        disabled : true},
+        {
+          value: "",
+          label: "Seleccione una categoría",
+          disabled: true
+        },
         ...categorias.map((c) => ({
           value: c.id,
           label: c.name,
         }))
-      ] ,
-     valuedisable: 'Seleccione una categoría',
+      ],
+      valuedisable: 'Seleccione una categoría',
     },
   ];
 
   return (
     <div className="">
-      
+
       <TwoRowForm
         inputs={inputs}
         onSubmit={(e) => {

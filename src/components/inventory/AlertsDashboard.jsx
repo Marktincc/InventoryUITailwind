@@ -26,14 +26,7 @@ export const AlertsDashboard = ({ alerts }) => {
                   Stock actual: {alert.cantidad} | Umbral: 10
                 </p>
               </div>
-              <div className="flex items-center space-x-2">
-                <button 
-                  className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
-                  onClick={() => alert.onResolve && alert.onResolve(alert.id)}
-                >
-                  Marcar como resuelto
-                </button>
-              </div>
+                
             </div>
           ))}
           {(!alerts || alerts.length === 0) && (

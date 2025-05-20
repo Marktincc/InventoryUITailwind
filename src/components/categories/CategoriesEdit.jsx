@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { useNavigate, useParams } from 'react-router-dom';
 import { TwoRowForm } from '../common/TwoRowForm';
 
-
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const CategoriesEdit = ({ onCategoryUpdated }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -18,7 +18,7 @@ export const CategoriesEdit = ({ onCategoryUpdated }) => {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/categorias/getById/${id}`);
+        const response = await axios.get(`${API_URL}/categorias/getById/${id}`);
         setCategory(response.data);
       } catch (error) {
         console.error('Error fetching category:', error);
@@ -36,7 +36,7 @@ export const CategoriesEdit = ({ onCategoryUpdated }) => {
   const handleSaveCategory = async () => {
     const savePromise = async () => {
       try {
-        const response = await axios.patch(`http://localhost:8080/categorias/update/${id}`, {
+        const response = await axios.patch(`${API_URL}/categorias/update/${id}`, {
           name: category.name,
         });
         toast.success('Categoría actualizada correctamente');
@@ -66,11 +66,11 @@ export const CategoriesEdit = ({ onCategoryUpdated }) => {
   const handleCancel = () => {
     navigate('/admin/categories');
   };
- 
+
   const handleDeleteCategorie = async () => {
     const deletePromise = async () => {
       try {
-        const response = await axios.delete(`http://localhost:8080/categorias/delete/${id}`);
+        const response = await axios.delete(`${API_URL}/categorias/delete/${id}`);
         return 'Categoría eliminada correctamente';
       } catch (error) {
         console.error('Error deleting category:', error);
@@ -90,7 +90,7 @@ export const CategoriesEdit = ({ onCategoryUpdated }) => {
         return 'Error al eliminar la categoría';
       },
     });
-    
+
   }
   const inputs = [
     {

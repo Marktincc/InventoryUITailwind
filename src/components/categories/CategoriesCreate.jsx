@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { TwoRowForm } from '../common/TwoRowForm';
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const CategoriesCreate = ({ onCategoryCreated }) => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ export const CategoriesCreate = ({ onCategoryCreated }) => {
   const handleSaveCategory = async (shouldCreateAnother = false) => {
     const savePromise = async () => {
       try {
-        const response = await axios.post('http://localhost:8080/categorias/create', {
+        const response = await axios.post(`${API_URL}/categorias/create`, {
           name: category.name,
         });
         return 'Categoría creada correctamente';
@@ -80,7 +81,7 @@ export const CategoriesCreate = ({ onCategoryCreated }) => {
           handleSaveCategory(createAnother);
           setCreateAnother(false);
         }}
-        title={'Crear categoría'}
+          title={'Crear categoría'}
           buttons={[
             {
               type: 'submit',
