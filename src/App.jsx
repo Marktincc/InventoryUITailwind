@@ -23,6 +23,10 @@ import { SupplierCreate } from './components/suppliers/SupplierCreate';
 import { SupplierEdit } from './components/suppliers/SupplierEdit';
 import { InventoryPage } from './pages/InventoryPage';
 import { AlertsDashboard } from './components/inventory/AlertsDashboard';
+import { SalesPage } from './pages/SalesPage';
+import { SaleCreate } from './components/sales/SaleCreate';
+import { SaleEdit } from './components/sales/SaleEdit';
+import { SalesDashboardPage } from './pages/SalesDashboardPage';
 
 function App() {
   return (
@@ -42,10 +46,16 @@ function App() {
             />
           }>
             <Route index element={<h1>Dashboard</h1>} />
-            <Route path="inventory" element={<InventoryPage/>}>
+            <Route path="inventory" element={<InventoryPage />}>
               <Route index element={<h1>Inventario</h1>} />
               <Route path="alerts" element={<AlertsDashboard />} />
               <Route path="reports" element={<h1>Reportes</h1>} />
+            </Route>
+            <Route path="sales" element={<SalesDashboardPage />} >
+              <Route index element={<h1>Ventas</h1>} />
+              <Route path="alerts" element={<SaleCreate />} />
+              <Route path="reports" element={<SaleEdit />} />
+
             </Route>
           </Route>
 
@@ -76,6 +86,11 @@ function App() {
               <Route index element={<h1>Productos</h1>} />
               <Route path="create" element={<SupplierCreate />} />
               <Route path=":id/edit" element={<SupplierEdit />} />
+            </Route>
+            <Route path="sales" element={<SalesPage />} >
+              <Route index element={<h1>Ventas</h1>} />
+              <Route path="create" element={<SaleCreate />} />
+              <Route path=":id/edit" element={<SaleEdit />} />
             </Route>
             <Route path="settings" element={<SettingsPage />} />
           </Route>

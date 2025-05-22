@@ -19,6 +19,11 @@ export const Navbar = () => {
       path: '/dashboard/inventory',
       icon: 'bi-box-seam',
     },
+    {
+      label: 'Ventas',
+      path: '/dashboard/sales',
+      icon: 'bi-cart',
+    }
     // {
     //   label: 'Reportes',
     //   path: '/dashboard/reports',
@@ -50,6 +55,11 @@ export const Navbar = () => {
       label: 'Proveedores',
       path: '/admin/suppliers',
       icon: 'bi-shop',
+    },
+    {
+      label: 'Ventas',
+      path: '/admin/sales',
+      icon: 'bi-cart-check',
     },
     {
       label: 'Configuración',
