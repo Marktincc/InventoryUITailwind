@@ -27,6 +27,7 @@ import { SalesPage } from './pages/SalesPage';
 import { SaleCreate } from './components/sales/SaleCreate';
 import { SaleEdit } from './components/sales/SaleEdit';
 import { SalesDashboardPage } from './pages/SalesDashboardPage';
+import { DashboardPage } from './pages/DashboardPage';
 
 function App() {
   return (
@@ -45,7 +46,7 @@ function App() {
               allowedRoles={['admin', 'user']}
             />
           }>
-            <Route index element={<h1>Dashboard</h1>} />
+            <Route index element={<DashboardPage/>} />
             <Route path="inventory" element={<InventoryPage />}>
               <Route index element={<h1>Inventario</h1>} />
               <Route path="alerts" element={<AlertsDashboard />} />

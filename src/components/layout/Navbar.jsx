@@ -9,11 +9,11 @@ export const Navbar = () => {
   const location = useLocation();
 
   const commonMenuItems = [
-    // {
-    //   label: 'Dashboard',
-    //   path: '/dashboard',
-    //   icon: 'bi-speedometer2',
-    // },
+    {
+      label: 'Dashboard',
+      path: '/dashboard',
+      icon: 'bi-speedometer2',
+    },
     {
       label: 'Inventario',
       path: '/dashboard/inventory',
@@ -31,11 +31,6 @@ export const Navbar = () => {
     // },
   ]
   const adminMenuItems = [
-    // {
-    //   label: 'Panel Admin',
-    //   path: '/admin',
-    //   icon: 'bi-gear',
-    // },
     {
       label: 'Usuarios',
       path: '/admin/users',
@@ -67,36 +62,57 @@ export const Navbar = () => {
       icon: 'bi-sliders',
     },
   ];
-  const menuItems = userRole === 'admin' ? [...commonMenuItems, ...adminMenuItems] : commonMenuItems;
   const isActiveRoute = (path) => {
-    // Si la ruta es '/admin', sólo será activa cuando estemos exactamente en '/admin' y no en '/admin/anything'
     if (path === '/admin') {
       return location.pathname === '/admin';
     }
     if (path === '/dashboard') {
-      // Aquí también chequeamos exactamente si la ruta es '/dashboard' y no cualquier cosa que empiece con '/dashboard'
       return location.pathname === '/dashboard';
     }
-    // Para otras rutas, se activa si la ruta comienza con `path`
     return location.pathname.startsWith(path);
   };
+
   return (
     <nav className="flex-1 overflow-y-auto overflow-x-hidden py-6">
       <ul className="space-y-1 -mx-3 px-6">
-        {menuItems.map((item, index) => (
+        <li className="mb-2 mt-1">
+          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider pl-3">Usuario</span>
+        </li>
+        {commonMenuItems.map((item, index) => (
           <li key={index} className="overflow-hidden">
             <NavLink
               to={item.path}
-              className={({ isActive }) =>  isActiveRoute(item.path) 
-              ? 'text-white flex gap-3 rounded-lg px-3 py-2 font-medium transition bg-gray-300/5' 
-              : 'text-gray-400 flex gap-3 rounded-lg px-3 py-2 font-medium transition hover:bg-gray-500/5 focus:bg-gray-500/5'
-          }
+              className={({ isActive }) => isActiveRoute(item.path)
+                ? 'text-white flex gap-3 rounded-lg px-3 py-2 font-medium transition bg-gray-300/5'
+                : 'text-gray-400 flex gap-3 rounded-lg px-3 py-2 font-medium transition hover:bg-gray-500/5 focus:bg-gray-500/5'
+              }
               end>
               <i className={`${item.icon} text-sm`}></i>
               <span className="text-sm">{item.label}</span>
             </NavLink>
           </li>
         ))}
+        {userRole === 'admin' && (
+          <>
+            <li className="mb-2 mt-4">
+              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider pl-3">Administrador</span>
+            </li>
+            {adminMenuItems.map((item, index) => (
+              <li key={index} className="overflow-hidden">
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) => isActiveRoute(item.path)
+                    ? 'text-white flex gap-3 rounded-lg px-3 py-2 font-medium transition bg-gray-300/5'
+                    : 'text-gray-400 flex gap-3 rounded-lg px-3 py-2 font-medium transition hover:bg-gray-500/5 focus:bg-gray-500/5'
+                  }
+                  end>
+                  <i className={`${item.icon} text-sm`}></i>
+                  <span className="text-sm">{item.label}</span>
+                </NavLink>
+              </li>
+            ))}
+          </>
+        )}
       </ul>
     </nav>
   )

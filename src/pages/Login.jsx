@@ -1,7 +1,7 @@
 import React from 'react';
 import { LoginForm } from '@/components/auth/LoginForm';
 import { useAuth } from '@/hooks/useAuth';
-import inventoryManagement from '@/assets/inventory-management.png'
+import inventoryManagement from '@/assets/inventory-management.webp';
 
 export const Login = () => {
   const { formData, isLoading, handleChange, handleLogin } = useAuth();

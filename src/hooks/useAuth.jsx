@@ -40,7 +40,7 @@ export const useAuth = () => {
 
         // redirigir según el rol
         if (data.rol === 'admin') {
-          navigate('/admin');
+          navigate('/dashboard');
         } else {
           navigate('/dashboard');
         }
